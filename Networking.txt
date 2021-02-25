@@ -1,0 +1,106 @@
+1.IP ADDRESS CLASSES
+
+Class	1st Octet                    Range		
+A	1 – 126*	                N.H.H.H	255.0.0.0	
+B	128 – 191	N.N.H.H	255.255.0.0	
+C	192 – 223	N.N.N.H	255.255.255.0		
+D	224 – 239               	Reserved for Multicasting
+E	240 – 254	Experimental; used for research
+
+Private IP Addresses:
+Class	Private Networks	                  Subnet Mask	            Address Range
+A	10.0.0.0	                                   255.0.0.0	 10.0.0.0 - 10.255.255.255
+B	172.16.0.0 - 172.31.0.0	   255.240.0.0	 172.16.0.0 - 172.31.255.255
+C	192.168.0.0	                   255.255.0.0	 192.168.0.0 - 192.168.255.255
+
+Note: Class A addresses 127.0.0.0 to 127.255.255.255 cannot be used and is reserved for loopback and diagnostic functions.
+
+REGIONS & AVAILABILITY ZONES
+
+2.VPC
+[NOTE:-HOW CALICULATE TOTAL NO OF IPS IN A CIDR BLOCK.
+10.0.0.0/32 means 32-32=0 so 2^0=1 ip available i.e., 10.0.0.0
+10.0.0.0/31 means 32-31=1 so 2^1=2 ips i.e., 10.0.0.0 & 10.0.0.1
+10.0.0.0/24 means 32-24=8 so 2^8=256 ips i.e., 10.0.0.0-10.0.0.255
+10.0.0.0/16 means 32-16=16 so 2^16=65,536 ips i.e., 10.0.0.0-10.0.255.255
+]
+~create a vpc 10.1.0.0/16 & edit DNS hostnames.
+~create three subnets subnet1:10.1.1.0/24
+                     subnet2:10.1.2.0/24
+                     subnet3:10.1.3.0/24 & select each subnet and enable auto assign ip settings.
+~create an internet gate way and attach it to the vpc.
+~A route table is already created under route tables and add subnets to it and edit routes all traffic(0.0.0.0/0) to the internet gate way.
+~create a security group.
+~create an instance ( with primary ip 10.1.1.100 ) within the created vpc and connect to the instance using putty.
+
+
+SECURITY GROUPS & NETWORK ACLS:-
+~security groups are instance level firewalls and statefull(means outbound not needed to set to connect an instance)
+~network acl's are subnet level firewalls and stateless(means need to set both inbound and outbound rules&without outbound here 
+                                                        not possible to conncet to an instance )
+
+
+3.PEERING CONNECTION
+~Create two vpcs with subnets,igw's,routes.
+~launch two instances within these two vpcs
+~create a peering connection and accept the request then try to ping to one instance from another instance with private ip only.
+~Not only we can peer two vpc's within region but also between two aws accounts or two separate regions.
+~If not ping in any case check the security group inbound and out bound rules as all traffic to anywhere.
+
+
+
+4.NATGATEWAY:-
+~bastion is management server
+~public subnet=>The subnet which is connected to the internet gate way(IGW).
+~private subnet=>The subnet which is not connected to the IGW.
+~The servers from public subnet(which is connected to IGW)are directly connected to internet.
+~so,the servers(Ex.database servers) from private subnets are connected to the internet with the help of nat gate way(NGW)& a public subnet.
+ 
+~create a new subnet called DB-subnet and give IP range as 10.1.10.0/24
+~no need to enable public ip for the subnet
+~deploy two instances,one in subnet-1(public) and other in DB-subnet(private).
+~check communication for both instances
+~Deploy a NAT Gateway by choosing public subnet(make sure to choose public subnet)
+~create a new Route table(RT) for DB-subnet and add routings towards NAT gateway.
+~SSH to public instance and from there SSH into DB instance and ping www.google.com and it should be reachable.
+~prove the traffic is going through NAT gateway (by changing routings).
+~NAT Gateway and elastic ip are chargeble so delete those after practise.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Create a vpc with cidr 10.1.0.0/16 & edit dns hostnames
+- Create three public subnets 10.1.1.0/24, 10.1.2.0/24, 10.1.3.0/24 & enable auto assign ip settings for all.
+- create a igw & attach that to vpc
+- By default a route table to created for new vpc
+- create an instance in that vpc & check ping www.google.com
+- prove communication is happens b/w two instances within vpc by creating one more instance in the same vpc
+- For instances other than vpcs should not connect directly so peering is required
+- create a peering connection b/w two diff instances and check communication is happened b/w them by editing route tables.
+
+- craete a private subnet 10.1.10.0/24 
+- craete extra route table as NAT-table & attacch that subnet to it.
+- craete a NAT gateway  in public subnet & attach eip to it.
+- Login to public subnet instance & then ssh to private instance & ping www.google.com & it should ping
+- prove it is happening through NAT gateway  
+ 

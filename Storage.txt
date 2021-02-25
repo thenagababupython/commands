@@ -1,0 +1,47 @@
+Storage Services:-
+
+
+
+we can access aws services by the following ways
+1.console:- ID & Password
+2.CLI:- access Key & Secret Access key
+3.API:-secret key& secret access key
+
+
+EBS-elastic block store -EC2
+Instance store -EC2
+
+Simple storage service (s3)-Object storage(Ex.google drive)
+Elastic file system (EFS)
+Glacier (Archiving)
+S3:-
+~Here we can create buckets to store data in S3.
+~we can give primary polices by using access control and to give advanced level policies we use bucket policies or policy generators are used.
+
+Versioning:-if we enable this every edit save as a version
+replication:-we can replicate a bucket data from one region to another region.
+events:-we get alerts(sms,mails) when we put or get objects to s3 bucket
+life cycle:-we can create a life cycle to store data in standard or infrequent access or glacier
+
+Glacier:-
+~we can create vaults here like buckets in s3.
+~we can not directly upload data to glacier like s3
+~we can transfer data to glacier  from s3 by using life cycle policies or by using third party tools like fast glacier
+
+ELASTIC FILE SYSTEM(EFS)
+          OR 
+NETWORK FILE SYSTEM(NFS):-
+~NFS PORT NO-2049
+~Create an elastic file sysytem
+~launch an instance and connect it and create two folders
+#mkdir folder1
+#mkdir folder2
+~use mount cmd in one folder and create some files in that folder
+~check the same files will appear in folder2 also.
+
+STORAGE GATEWAY:-It is used to transfer on premises data to cloud (s3 or glacier)
+~Three types 1.file gateway
+             2.volume gateway
+             3.tape gateway
+~create a storage gateway and select file gateway and host as VMware download image
+~
